@@ -16,6 +16,8 @@ const navigate = useNavigate()
 //* Pasos para llamar a la API e interactuar con el contenido
 //! 1. Estados
 const [allBeers, setAllBeers] = useState(null)
+// * Estado de búsqueda
+const [searchBeers, setSearchBeers] = useState("")
 
 //! 2. Acceder al componentDidMount
 useEffect(() => {
@@ -44,6 +46,7 @@ if (allBeers === null) {
 
 const handleSearch = async (event) => {
     console.log(event.target.value);
+    setSearchBeers(event.target.value)
 
     try {
         const response = await axios.get(`https://ih-beers-api2.herokuapp.com/beers/search?q=${event.target.value}`)
@@ -68,7 +71,7 @@ const handleSearch = async (event) => {
 
         <form>
             <label htmlFor="searchBeer">Search beer: </label>
-            <input type="text" name='searchBeer' onChange={handleSearch}  />
+            <input type="text" name='searchBeer' onChange={handleSearch} value={searchBeers}  />
         </form>
 
         {
