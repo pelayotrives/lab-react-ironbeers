@@ -20,7 +20,7 @@ const [allBeers, setAllBeers] = useState(null)
 //! 2. Acceder al componentDidMount
 useEffect(() => {
     getAllBeers()
-})
+}, [])
 
 //! 3. Crear función que llama a API y se comunica con componentDidMount
 const getAllBeers = async () => {
@@ -34,12 +34,29 @@ const getAllBeers = async () => {
     }
 }
 
-
 //! 4. Spinner de loading
 
 if (allBeers === null) {
     return <PuffLoader color={"#3DC4FC"}/>
 }
+
+//! ---------------------- Handle del buscador ----------------------------
+
+const handleSearch = async (event) => {
+    console.log(event.target.value);
+
+    try {
+        const response = await axios.get(`https://ih-beers-api2.herokuapp.com/beers/search?q=${event.target.value}`)
+        console.log(response.data);
+        setAllBeers(response.data)
+    }
+    catch (error) {
+        navigate("/error")
+    }
+
+}
+
+//! ---------------------- Handle del buscador ----------------------------
 
   return (
     <div>
@@ -51,7 +68,7 @@ if (allBeers === null) {
 
         <form>
             <label htmlFor="searchBeer">Search beer: </label>
-            <input type="text" name='searchBeer'  />
+            <input type="text" name='searchBeer' onChange={handleSearch}  />
         </form>
 
         {
